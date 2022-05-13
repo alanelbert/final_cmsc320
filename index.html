@@ -14590,8 +14590,31 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="1.-Introduction">1. Introduction<a class="anchor-link" href="#1.-Introduction">&#182;</a></h2><p>Predicting a stocks price is a multibillion dollar industry, with numerous hedgefunds investing massive sums of money in order to determine what will happen to a stock's price. Thousands, if not millions of factors affect the price of a stock, ranging from the overall performance of the economy, public sentiment, commodity prices, geopolitical events, and much more.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>Predicting a stocks price is a multibillion dollar industry, with numerous hedgefunds investing massive sums of money in order to determine what will happen to a stock's price. Thousands, if not millions of factors affect the price of a stock, ranging from the overall performance of the economy, public sentiment, commodity prices, geopolitical events, and much more.</p>
 <p>The overall objective of this project will be to analyze the prices of Intel stock, specifically in comparison to commodity price indices and the performance of other stocks related to Intel, mainly its competitors and companies that Intel does business with (Suppliers and Customers of Intel). Although this will come no where near the scale of analysis done at larger firms with more resources, I hope that this will reveal at least a few interesting trends, that a budding trader might consider when deciding to buy, or sell, Intel stock.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Required-Libraries">Required Libraries<a class="anchor-link" href="#Required-Libraries">&#182;</a></h3><p>You will need the following libraries and all their dependencies for this project</p>
+<ol>
+<li>Pandas</li>
+<li>Numpy</li>
+<li>ScikitLearn</li>
+<li>Statsmodels</li>
+<li>Matplotlib</li>
+<li>Datetime</li>
+<li>Scipy</li>
+<li>Requests</li>
+<li>json</li>
+</ol>
 
 </div>
 </div>
@@ -14601,18 +14624,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
-
-
 <span class="kn">import</span> <span class="nn">requests</span>
-
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">linear_model</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sma</span>
@@ -14620,12 +14639,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
 
-<span class="c1"># https://finance.yahoo.com/quote/intc/history/</span>
-
-
-<span class="n">n_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;INTC.csv&quot;</span><span class="p">)</span>
-<span class="n">n_data</span>
+<span class="c1"># Warnings about the future kept clogging up the output</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14643,7 +14663,718 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>/home/alan/anaconda3/lib/python3.9/site-packages/statsmodels/tsa/base/tsa_model.py:7: FutureWarning: pandas.Int64Index is deprecated and will be removed from pandas in a future version. Use pandas.Index with the appropriate dtype instead.
+  from pandas import (to_datetime, Int64Index, DatetimeIndex, Period,
+/home/alan/anaconda3/lib/python3.9/site-packages/statsmodels/tsa/base/tsa_model.py:7: FutureWarning: pandas.Float64Index is deprecated and will be removed from pandas in a future version. Use pandas.Index with the appropriate dtype instead.
+  from pandas import (to_datetime, Int64Index, DatetimeIndex, Period,
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Data-Acquisition-and-Processing">Data Acquisition and Processing<a class="anchor-link" href="#Data-Acquisition-and-Processing">&#182;</a></h1><p>This is the data acquisition and wrangling phase. To make it easier to follow along, we are going to combine both parts into one for every source of data</p>
+<p>For our analysis today, we will be getting two types of data, stock and commodity price data. Getting each will require the use of different libraries and different techniques to wrangle for use later.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="1a-Stock-Data">1a Stock Data<a class="anchor-link" href="#1a-Stock-Data">&#182;</a></h2><h3 id="Data-Acquisition">Data Acquisition<a class="anchor-link" href="#Data-Acquisition">&#182;</a></h3><p>We want to compare Intel's stock prices to various other companies in the industry related to Intel. We are mainly going to focus on four different kinds of companies, Intel (INTC) itself, Intel's suppliers, Intel's customers, and Intel's competitors. We will only use data from after 2001, because in 2000 there was a massive stock crash involving numerous tech comapanies (the dot com bubble), which for us represents a massive outlier.</p>
+<p>If you read this massive financial statement, linked below, several insights can be found about what comapnies we should focus on for our analysis:</p>
+<p><a href="https://www.intc.com/filings-reports/annual-reports/content/0000050863-22-000007/0000050863-22-000007.pdf">https://www.intc.com/filings-reports/annual-reports/content/0000050863-22-000007/0000050863-22-000007.pdf</a></p>
+<p>Firstly, Intel's three largest customers, Dell (DELL), Lenovo (LNVGF), and HP Inc (HPE) , accounted for 43% of Intel's revenue. However, this report unfortunately does not include any mention of smaller customers, but for the purposes of this tutorial, especially when they take up such a large portion of Intel's revenue, they will be enough.</p>
+<p>As for suppliers, a list of Intel's top suppliers can be found here:</p>
+<p><a href="https://www.intc.com/news-events/press-releases/detail/1455/intel-2020-supplier-continuous-quality-improvement-awards">https://www.intc.com/news-events/press-releases/detail/1455/intel-2020-supplier-continuous-quality-improvement-awards</a></p>
+<p>For the purposes of this analysis, we will be focusing on Intel's top suppliers, namely those who received the SCQI award. As such, they are</p>
+<ul>
+<li>Applied Materials, Inc (AMAT)</li>
+<li>Lam Research Corporation (LRCX)</li>
+<li>Securitas Security Services USA, Inc (SECU-B.ST)</li>
+<li>Siltronic AG (WAF.DE)</li>
+<li>Taiwan Semiconductor Manufacturing Company, Limited (TSM)</li>
+<li>Tokyo Electron Limited (TOELY)</li>
+</ul>
+<p>Additionally, looking at the page, you will notice that these suppliers represent diverse and varied industries, randing from silicon wafers to solder paste, and will hopefully paint the best possible picture of the performance of Intel's suppliers.</p>
+<p>Finally, as for the main competitors, a list of such companies can be found here, from Investopedia, which are namely:</p>
+<ul>
+<li>AMD (AMD)</li>
+<li>IBM (IBM)</li>
+<li>NVIDIA (NVDA)</li>
+<li>Samsung (SMSN.IL)</li>
+</ul>
+<p>Hopefully, by analyzing the stocks of all these companies related to Intel, we will find some interesting relationships that will allow us to somewhat predict the its stock price.</p>
+<p>In order to do this, we will use Yahoo's Finance API along with requests and json libraries in order to request the information we need directly from Yahoo's database through the Spark API endpoint. More information on how to use the Finance API with the requests library can be found in the links below:</p>
+<p><a href="https://www.yahoofinanceapi.com/tutorial">https://www.yahoofinanceapi.com/tutorial</a>
+<a href="https://www.yahoofinanceapi.com/">https://www.yahoofinanceapi.com/</a></p>
+<p>Another way to get Yahoo's finance data is to go directly to Yahoo's site and download the data as a .csv file. This is somewhat tedious however, and does not scale well if you want to analyze additional companies. In this tutorial, we will do both. For Intel's stock data, we will download it directly in order to demonstrate the latter method using the link below, but for every other companies' stock data we will go the requests route.</p>
+<p><a href="https://finance.yahoo.com/quote/intc/history/">https://finance.yahoo.com/quote/intc/history/</a></p>
+<p>(Use the download link under the apply button)</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This method returns a JSON containing data for the company(s) requested</span>
+<span class="k">def</span> <span class="nf">get_historical_data</span><span class="p">(</span><span class="n">symbols</span><span class="p">):</span>
+
+    <span class="c1"># We want to use the spark endpoint</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://yfapi.net/v8/finance/spark&quot;</span>
+
+    <span class="c1"># Automatically generates the request we need</span>
+    <span class="n">querystring</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;symbols&quot;</span><span class="p">:</span><span class="n">symbols</span><span class="p">,</span> <span class="s2">&quot;range&quot;</span><span class="p">:</span><span class="s2">&quot;21y&quot;</span><span class="p">,</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span><span class="s2">&quot;1mo&quot;</span><span class="p">}</span>
+
+    <span class="c1"># This is the key associated with my personal free account. If this does not work for some reason, you can make your own account using the links above, and use your own key</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;x-api-key&#39;</span><span class="p">:</span> <span class="s2">&quot;PKGDrT01fX36RI0yCCEbfaPqLfqvToj71o3reBkp&quot;</span>
+        <span class="p">}</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">querystring</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+
+
+<span class="n">customers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DELL&#39;</span><span class="p">,</span><span class="s1">&#39;LNVGF&#39;</span><span class="p">,</span><span class="s1">&#39;HPE&#39;</span><span class="p">]</span>
+
+<span class="c1"># I omitted LCRX as there was a strange error downloading the json file</span>
+<span class="n">suppliers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AMAT&#39;</span><span class="p">,</span> <span class="s1">&#39;SECU-B.ST&#39;</span><span class="p">,</span><span class="s1">&#39;WAF.DE&#39;</span><span class="p">,</span><span class="s1">&#39;TSM&#39;</span><span class="p">,</span><span class="s1">&#39;TOELY&#39;</span><span class="p">]</span>
+<span class="n">competitors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AMD&#39;</span><span class="p">,</span><span class="s1">&#39;IBM&#39;</span><span class="p">,</span><span class="s1">&#39;NVDA&#39;</span><span class="p">,</span><span class="s1">&#39;SMSN.IL&#39;</span><span class="p">]</span>
+
+<span class="n">everyone</span> <span class="o">=</span> <span class="n">customers</span> <span class="o">+</span> <span class="n">suppliers</span> <span class="o">+</span> <span class="n">competitors</span>
+
+
+<span class="c1"># The free API has limited requests per day. So, if the JSON already exists, there is no point in wasting precious API calls. So, as soon as we get the JSON we save it locally</span>
+<span class="c1"># Another issue I found was that although the API allows you to request data for up to 10 companies at a time, there is somewhat of a cap on JSON size, which caused missing data</span>
+<span class="c1"># To alleviate this, we can just request the data for companies individually</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">everyone</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading: &quot;</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">get_historical_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;AMD.json&#39;</span><span class="p">)</span>
+
+<span class="n">toprint</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">toprint</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>{
+    &#34;AMD&#34;: {
+        &#34;chartPreviousClose&#34;: 27.68,
+        &#34;close&#34;: [
+            28.9,
+            18.26,
+            13.55,
+            8.15,
+            9.84,
+            13.56,
+            15.86,
+            16.05,
+            13.5,
+            14.71,
+            11.18,
+            11.43,
+            9.72,
+            8.03,
+            8.85,
+            5.34,
+            6.14,
+            9.0,
+            6.46,
+            5.24,
+            5.49,
+            6.18,
+            7.44,
+            7.28,
+            6.41,
+            7.3,
+            11.29,
+            11.11,
+            15.2,
+            17.97,
+            14.9,
+            14.86,
+            15.0,
+            16.23,
+            14.22,
+            15.55,
+            15.9,
+            12.49,
+            11.43,
+            13.0,
+            16.82,
+            21.28,
+            22.02,
+            15.8,
+            17.45,
+            16.12,
+            14.23,
+            16.4,
+            17.34,
+            20.08,
+            20.77,
+            25.2,
+            23.22,
+            26.18,
+            30.6,
+            41.8,
+            38.67,
+            33.16,
+            32.35,
+            30.89,
+            24.42,
+            19.39,
+            24.99,
+            24.85,
+            21.27,
+            21.57,
+            20.35,
+            15.55,
+            15.07,
+            13.06,
+            13.82,
+            14.27,
+            14.3,
+            13.54,
+            13.0,
+            13.2,
+            13.08,
+            9.76,
+            7.5,
+            7.59,
+            7.21,
+            5.89,
+            5.96,
+            6.88,
+            5.83,
+            4.21,
+            6.29,
+            5.25,
+            3.5,
+            2.36,
+            2.16,
+            2.19,
+            2.18,
+            3.05,
+            3.61,
+            4.54,
+            3.87,
+            3.66,
+            4.36,
+            5.66,
+            4.6,
+            7.01,
+            9.68,
+            7.46,
+            7.91,
+            9.27,
+            9.07,
+            8.57,
+            7.32,
+            7.49,
+            5.61,
+            7.11,
+            7.34,
+            7.29,
+            8.18,
+            7.83,
+            9.21,
+            8.6,
+            9.1,
+            8.68,
+            6.99,
+            7.34,
+            6.83,
+            5.08,
+            5.83,
+            5.69,
+            5.4,
+            6.71,
+            7.35,
+            8.02,
+            7.36,
+            6.08,
+            5.73,
+            4.06,
+            3.72,
+            3.37,
+            2.05,
+            2.2,
+            2.4,
+            2.6,
+            2.49,
+            2.55,
+            2.82,
+            4.0,
+            4.08,
+            3.77,
+            3.27,
+            3.81,
+            3.34,
+            3.64,
+            3.87,
+            3.43,
+            3.71,
+            4.01,
+            4.09,
+            4.0,
+            4.19,
+            3.91,
+            4.17,
+            3.41,
+            2.8,
+            2.79,
+            2.67,
+            2.57,
+            3.11,
+            2.68,
+            2.26,
+            2.28,
+            2.4,
+            1.93,
+            1.81,
+            1.72,
+            2.12,
+            2.36,
+            2.87,
+            2.2,
+            2.14,
+            2.85,
+            3.55,
+            4.57,
+            5.14,
+            6.86,
+            7.4,
+            6.91,
+            7.23,
+            8.91,
+            11.34,
+            10.37,
+            14.46,
+            14.55,
+            13.3,
+            11.19,
+            12.48,
+            13.61,
+            13.0,
+            12.75,
+            10.99,
+            10.89,
+            10.28,
+            13.74,
+            12.11,
+            10.05,
+            10.88,
+            13.73,
+            14.99,
+            18.33,
+            25.17,
+            30.89,
+            18.21,
+            21.3,
+            18.46,
+            24.41,
+            23.53,
+            25.52,
+            27.63,
+            27.41,
+            30.37,
+            30.45,
+            31.45,
+            28.99,
+            33.93,
+            39.15,
+            45.86,
+            47.0,
+            45.48,
+            45.48,
+            52.39,
+            53.8,
+            52.61,
+            77.43,
+            90.82,
+            81.99,
+            75.29,
+            92.66,
+            91.71,
+            85.64,
+            84.51,
+            78.5,
+            81.62,
+            80.08,
+            93.93,
+            106.19,
+            110.72,
+            102.9,
+            120.23,
+            158.37,
+            143.9,
+            114.25,
+            123.34,
+            109.34,
+            85.52,
+            87.06,
+            93.662
+        ],
+        &#34;dataGranularity&#34;: 300,
+        &#34;end&#34;: null,
+        &#34;previousClose&#34;: null,
+        &#34;start&#34;: null,
+        &#34;symbol&#34;: &#34;AMD&#34;,
+        &#34;timestamp&#34;: [
+            991368000,
+            993960000,
+            996638400,
+            999316800,
+            1001908800,
+            1004590800,
+            1007182800,
+            1009861200,
+            1012539600,
+            1014958800,
+            1017637200,
+            1020225600,
+            1022904000,
+            1025496000,
+            1028174400,
+            1030852800,
+            1033444800,
+            1036126800,
+            1038718800,
+            1041397200,
+            1044075600,
+            1046494800,
+            1049173200,
+            1051761600,
+            1054440000,
+            1057032000,
+            1059710400,
+            1062388800,
+            1064980800,
+            1067662800,
+            1070254800,
+            1072933200,
+            1075611600,
+            1078117200,
+            1080795600,
+            1083384000,
+            1086062400,
+            1088654400,
+            1091332800,
+            1094011200,
+            1096603200,
+            1099285200,
+            1101877200,
+            1104555600,
+            1107234000,
+            1109653200,
+            1112331600,
+            1114920000,
+            1117598400,
+            1120190400,
+            1122868800,
+            1125547200,
+            1128139200,
+            1130821200,
+            1133413200,
+            1136091600,
+            1138770000,
+            1141189200,
+            1143867600,
+            1146456000,
+            1149134400,
+            1151726400,
+            1154404800,
+            1157083200,
+            1159675200,
+            1162357200,
+            1164949200,
+            1167627600,
+            1170306000,
+            1172725200,
+            1175400000,
+            1177992000,
+            1180670400,
+            1183262400,
+            1185940800,
+            1188619200,
+            1191211200,
+            1193889600,
+            1196485200,
+            1199163600,
+            1201842000,
+            1204347600,
+            1207022400,
+            1209614400,
+            1212292800,
+            1214884800,
+            1217563200,
+            1220241600,
+            1222833600,
+            1225512000,
+            1228107600,
+            1230786000,
+            1233464400,
+            1235883600,
+            1238558400,
+            1241150400,
+            1243828800,
+            1246420800,
+            1249099200,
+            1251777600,
+            1254369600,
+            1257048000,
+            1259643600,
+            1262322000,
+            1265000400,
+            1267419600,
+            1270094400,
+            1272686400,
+            1275364800,
+            1277956800,
+            1280635200,
+            1283313600,
+            1285905600,
+            1288584000,
+            1291179600,
+            1293858000,
+            1296536400,
+            1298955600,
+            1301630400,
+            1304222400,
+            1306900800,
+            1309492800,
+            1312171200,
+            1314849600,
+            1317441600,
+            1320120000,
+            1322715600,
+            1325394000,
+            1328072400,
+            1330578000,
+            1333252800,
+            1335844800,
+            1338523200,
+            1341115200,
+            1343793600,
+            1346472000,
+            1349064000,
+            1351742400,
+            1354338000,
+            1357016400,
+            1359694800,
+            1362114000,
+            1364788800,
+            1367380800,
+            1370059200,
+            1372651200,
+            1375329600,
+            1378008000,
+            1380600000,
+            1383278400,
+            1385874000,
+            1388552400,
+            1391230800,
+            1393650000,
+            1396324800,
+            1398916800,
+            1401595200,
+            1404187200,
+            1406865600,
+            1409544000,
+            1412136000,
+            1414814400,
+            1417410000,
+            1420088400,
+            1422766800,
+            1425186000,
+            1427860800,
+            1430452800,
+            1433131200,
+            1435723200,
+            1438401600,
+            1441080000,
+            1443672000,
+            1446350400,
+            1448946000,
+            1451624400,
+            1454302800,
+            1456808400,
+            1459483200,
+            1462075200,
+            1464753600,
+            1467345600,
+            1470024000,
+            1472702400,
+            1475294400,
+            1477972800,
+            1480568400,
+            1483246800,
+            1485925200,
+            1488344400,
+            1491019200,
+            1493611200,
+            1496289600,
+            1498881600,
+            1501560000,
+            1504238400,
+            1506830400,
+            1509508800,
+            1512104400,
+            1514782800,
+            1517461200,
+            1519880400,
+            1522555200,
+            1525147200,
+            1527825600,
+            1530417600,
+            1533096000,
+            1535774400,
+            1538366400,
+            1541044800,
+            1543640400,
+            1546318800,
+            1548997200,
+            1551416400,
+            1554091200,
+            1556683200,
+            1559361600,
+            1561953600,
+            1564632000,
+            1567310400,
+            1569902400,
+            1572580800,
+            1575176400,
+            1577854800,
+            1580533200,
+            1583038800,
+            1585713600,
+            1588305600,
+            1590984000,
+            1593576000,
+            1596254400,
+            1598932800,
+            1601524800,
+            1604203200,
+            1606798800,
+            1609477200,
+            1612155600,
+            1614574800,
+            1617249600,
+            1619841600,
+            1622520000,
+            1625112000,
+            1627790400,
+            1630468800,
+            1633060800,
+            1635739200,
+            1638334800,
+            1641013200,
+            1643691600,
+            1646110800,
+            1648785600,
+            1651377600,
+            1652454881
+        ]
+    }
+}
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now that we have gotten all the data downloaded from Yahoo's API in .json format, an example of which is shown above, the next step is to load in Intel's data. This was manually downloaded from the website (link above) and transfered to the tutorial folder. Once it is locally available, loading it is as simple as using pandas' .load_csv() function.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">intcdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;INTC.csv&#39;</span><span class="p">)</span>
+<span class="n">intcdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
 
 
 
@@ -14726,69 +15457,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>8.497054</td>
       <td>1253168200</td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>236</th>
-      <td>2022-01-01</td>
-      <td>51.650002</td>
-      <td>56.279999</td>
-      <td>46.299999</td>
-      <td>48.820000</td>
-      <td>48.450916</td>
-      <td>890542800</td>
-    </tr>
-    <tr>
-      <th>237</th>
-      <td>2022-02-01</td>
-      <td>48.779999</td>
-      <td>49.970001</td>
-      <td>43.630001</td>
-      <td>47.700001</td>
-      <td>47.339386</td>
-      <td>756814900</td>
-    </tr>
-    <tr>
-      <th>238</th>
-      <td>2022-03-01</td>
-      <td>47.540001</td>
-      <td>52.509998</td>
-      <td>44.070000</td>
-      <td>49.560001</td>
-      <td>49.560001</td>
-      <td>849288700</td>
-    </tr>
-    <tr>
-      <th>239</th>
-      <td>2022-04-01</td>
-      <td>49.830002</td>
-      <td>49.900002</td>
-      <td>43.500000</td>
-      <td>43.590000</td>
-      <td>43.590000</td>
-      <td>639357900</td>
-    </tr>
-    <tr>
-      <th>240</th>
-      <td>2022-05-01</td>
-      <td>43.720001</td>
-      <td>46.639999</td>
-      <td>43.509998</td>
-      <td>46.540001</td>
-      <td>46.540001</td>
-      <td>130230500</td>
-    </tr>
   </tbody>
 </table>
-<p>241 rows × 7 columns</p>
 </div>
 </div>
 
@@ -14805,7 +15475,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Based on the above data set, note how</p>
+<h3 id="Data-Processing">Data Processing<a class="anchor-link" href="#Data-Processing">&#182;</a></h3><p>There is a glaring issue that comes up when you examine stock prices across years. A drop from 100$ to 98$ is not as significant for investors as say a drop from 10$ to 8$. If you invested 100$ in the former, you would only lose 2$, but investing in the latter would lose you 20$. All of these stocks go through large swings in their prices over the past twenty years, so just computing the change in dollars between the open and close for every month would simply be misleading and innaccurate. In order to enable us to compare changes in prices across varying price levels, we are going to compute the percent change instead.</p>
+<p>For the Intel dataframe, this process is quite simple, we can just subtract the open price column from the close price column, divide it by the open price column, and then multiply by 100 to get our percent change.</p>
 
 </div>
 </div>
@@ -14815,20 +15486,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_data</span><span class="p">[</span><span class="s2">&quot;percent_change&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">n_data</span><span class="p">[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">n_data</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">n_data</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">100.0</span>
-
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">n_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]))</span>
-    <span class="n">n_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span>
-
-
-<span class="n">n_data</span> <span class="o">=</span> <span class="n">n_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="mi">239</span><span class="p">,</span> <span class="mi">240</span><span class="p">])</span>
-<span class="n">n_data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;percent_change&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">100.0</span>
+<span class="n">intcdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14846,7 +15508,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 
 
 
@@ -14935,75 +15597,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1253168200</td>
       <td>-15.664840</td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>234</th>
-      <td>2021-11-01</td>
-      <td>49.400002</td>
-      <td>51.990002</td>
-      <td>48.119999</td>
-      <td>49.200001</td>
-      <td>48.490829</td>
-      <td>617076700</td>
-      <td>-0.404860</td>
-    </tr>
-    <tr>
-      <th>235</th>
-      <td>2021-12-01</td>
-      <td>49.840000</td>
-      <td>55.000000</td>
-      <td>48.330002</td>
-      <td>51.500000</td>
-      <td>51.110657</td>
-      <td>714651800</td>
-      <td>3.330658</td>
-    </tr>
-    <tr>
-      <th>236</th>
-      <td>2022-01-01</td>
-      <td>51.650002</td>
-      <td>56.279999</td>
-      <td>46.299999</td>
-      <td>48.820000</td>
-      <td>48.450916</td>
-      <td>890542800</td>
-      <td>-5.479190</td>
-    </tr>
-    <tr>
-      <th>237</th>
-      <td>2022-02-01</td>
-      <td>48.779999</td>
-      <td>49.970001</td>
-      <td>43.630001</td>
-      <td>47.700001</td>
-      <td>47.339386</td>
-      <td>756814900</td>
-      <td>-2.214018</td>
-    </tr>
-    <tr>
-      <th>238</th>
-      <td>2022-03-01</td>
-      <td>47.540001</td>
-      <td>52.509998</td>
-      <td>44.070000</td>
-      <td>49.560001</td>
-      <td>49.560001</td>
-      <td>849288700</td>
-      <td>4.249053</td>
-    </tr>
   </tbody>
 </table>
-<p>239 rows × 8 columns</p>
 </div>
 </div>
 
@@ -15013,36 +15608,28 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Additionally, now that we have computed the percent change, the other columns are quite useless for our analysis, and keeping them will only cause bloat and confusion, so we will drop them using the following line of code.</p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;TSM.csv&quot;</span><span class="p">)</span>
-<span class="n">t_data</span><span class="p">[</span><span class="s2">&quot;percent_change&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">t_data</span><span class="p">[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">t_data</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">t_data</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">100.0</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">t_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]))</span>
-    <span class="n">t_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span>
-
-
-
-<span class="n">a_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;AMD.csv&quot;</span><span class="p">)</span>
-<span class="n">a_data</span><span class="p">[</span><span class="s2">&quot;percent_change&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">a_data</span><span class="p">[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">a_data</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">a_data</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">100.0</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">a_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]))</span>
-    <span class="n">a_data</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span>
-
-<span class="n">t_data</span> <span class="o">=</span> <span class="n">t_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">a_data</span> <span class="o">=</span> <span class="n">a_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="n">a_data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">intcdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">intcdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;percent_change&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">intcdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15060,7 +15647,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 
 
 
@@ -15084,140 +15671,37 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     <tr style="text-align: right;">
       <th></th>
       <th>Date</th>
-      <th>Open</th>
-      <th>High</th>
-      <th>Low</th>
-      <th>Close</th>
-      <th>Adj Close</th>
-      <th>Volume</th>
       <th>percent_change</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
+      <th>0</th>
       <td>2002-05-01</td>
-      <td>11.350000</td>
-      <td>12.950000</td>
-      <td>10.400000</td>
-      <td>11.430000</td>
-      <td>11.430000</td>
-      <td>100840400</td>
-      <td>0.704846</td>
+      <td>-3.325163</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2002-06-01</td>
+      <td>-33.394094</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>2002-06-01</td>
-      <td>11.400000</td>
-      <td>11.410000</td>
-      <td>7.950000</td>
-      <td>9.720000</td>
-      <td>9.720000</td>
-      <td>137478900</td>
-      <td>-14.736842</td>
+      <td>2002-07-01</td>
+      <td>2.397826</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>2002-07-01</td>
-      <td>9.600000</td>
-      <td>10.300000</td>
-      <td>7.460000</td>
-      <td>8.030000</td>
-      <td>8.030000</td>
-      <td>111618400</td>
-      <td>-16.354167</td>
+      <td>2002-08-01</td>
+      <td>-10.950850</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>2002-08-01</td>
-      <td>8.030000</td>
-      <td>10.880000</td>
-      <td>7.010000</td>
-      <td>8.850000</td>
-      <td>8.850000</td>
-      <td>110296000</td>
-      <td>10.211706</td>
-    </tr>
-    <tr>
-      <th>5</th>
       <td>2002-09-01</td>
-      <td>8.600000</td>
-      <td>8.690000</td>
-      <td>5.200000</td>
-      <td>5.340000</td>
-      <td>5.340000</td>
-      <td>118764300</td>
-      <td>-37.906977</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>235</th>
-      <td>2021-11-01</td>
-      <td>119.449997</td>
-      <td>164.460007</td>
-      <td>118.129997</td>
-      <td>158.369995</td>
-      <td>158.369995</td>
-      <td>1373609400</td>
-      <td>32.582670</td>
-    </tr>
-    <tr>
-      <th>236</th>
-      <td>2021-12-01</td>
-      <td>160.369995</td>
-      <td>160.880005</td>
-      <td>130.600006</td>
-      <td>143.899994</td>
-      <td>143.899994</td>
-      <td>1175493900</td>
-      <td>-10.270002</td>
-    </tr>
-    <tr>
-      <th>237</th>
-      <td>2022-01-01</td>
-      <td>145.139999</td>
-      <td>152.419998</td>
-      <td>99.349998</td>
-      <td>114.250000</td>
-      <td>114.250000</td>
-      <td>1638612600</td>
-      <td>-21.282899</td>
-    </tr>
-    <tr>
-      <th>238</th>
-      <td>2022-02-01</td>
-      <td>116.750000</td>
-      <td>132.960007</td>
-      <td>104.260002</td>
-      <td>123.339996</td>
-      <td>123.339996</td>
-      <td>2293656000</td>
-      <td>5.644536</td>
-    </tr>
-    <tr>
-      <th>239</th>
-      <td>2022-03-01</td>
-      <td>122.330002</td>
-      <td>125.669998</td>
-      <td>100.080002</td>
-      <td>109.339996</td>
-      <td>109.339996</td>
-      <td>2460278900</td>
-      <td>-10.618823</td>
+      <td>-15.664840</td>
     </tr>
   </tbody>
 </table>
-<p>239 rows × 8 columns</p>
 </div>
 </div>
 
@@ -15234,7 +15718,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="2--Commodity-Price-data">2  Commodity Price data<a class="anchor-link" href="#2--Commodity-Price-data">&#182;</a></h2><h3 id="Acquisision">Acquisision<a class="anchor-link" href="#Acquisision">&#182;</a></h3><p>In comparison to acquiring the stock data from Yahoo finance, acquiring commodity price data for several different commodities is as simple as downloading a file.</p>
+<p>We have now processed the Intel data into a format that we can use for further analysis. Now the tricky part begins, dealing with the JSON data. Unlike a .csv which is easily readable by pandas, a json is not. Although pandas does have a read_json function, looking at the output below for AMD.json, for example, it simply is not formatted correctly.</p>
 
 </div>
 </div>
@@ -15244,10 +15728,815 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tcomm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;https://www.imf.org/-/media/Files/Research/CommodityPrices/Monthly/external-data-indices-onlyapril.ashx&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">amd_t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s1">&#39;AMD.json&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+<span class="n">amd_t</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>symbol</th>
+      <th>timestamp</th>
+      <th>dataGranularity</th>
+      <th>close</th>
+      <th>end</th>
+      <th>start</th>
+      <th>previousClose</th>
+      <th>chartPreviousClose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AMD</th>
+      <td>AMD</td>
+      <td>[991368000, 993960000, 996638400, 999316800, 1...</td>
+      <td>300</td>
+      <td>[28.9, 18.26, 13.55, 8.15, 9.84, 13.56, 15.86,...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>27.68</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>However, looking at the output above, the data we need is loaded, we just have to extract it and reformat it properly. We will do this by first creating a new empty dataframe, and then iterating through the arrays storing the timestamp and close data to add them to the new dataframe one row at a time.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">amd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Getting the arrays we need</span>
+<span class="n">tstamp</span> <span class="o">=</span> <span class="n">amd_t</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">close</span> <span class="o">=</span> <span class="n">amd_t</span><span class="p">[</span><span class="s1">&#39;close&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Adding rows to the df one at a time</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tstamp</span><span class="p">:</span>
+    <span class="n">amd</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="n">amd</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Close&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">close</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+<span class="n">amd</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Close</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>9.913680e+08</td>
+      <td>28.90</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.939600e+08</td>
+      <td>18.26</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9.966384e+08</td>
+      <td>13.55</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9.993168e+08</td>
+      <td>8.15</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.001909e+09</td>
+      <td>9.84</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now we have something that is formatted correctly, which will allow us to do the next phase of data wrangling. Another way to do this is to use the JSON parser instead of pandas to extract the relevant values, as shown below.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Opening the JSON as a file</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;AMD.json&#39;</span><span class="p">)</span>
+
+<span class="c1"># This reads the file, parses it, and returns a dictionary with all the necessary data</span>
+<span class="n">amd_jdata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First ten timestamps:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">amd_jdata</span><span class="p">[</span><span class="s1">&#39;AMD&#39;</span><span class="p">][</span><span class="s1">&#39;timestamp&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First ten close prices:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">amd_jdata</span><span class="p">[</span><span class="s1">&#39;AMD&#39;</span><span class="p">][</span><span class="s1">&#39;close&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>First ten timestamps:
+[991368000, 993960000, 996638400, 999316800, 1001908800, 1004590800, 1007182800, 1009861200, 1012539600, 1014958800]
+First ten close prices:
+[28.9, 18.26, 13.55, 8.15, 9.84, 13.56, 15.86, 16.05, 13.5, 14.71]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>From here, the data can be simply added to a dataframe with the loop above. Now, we have to further clean up the data. Firstly, although UNIX time is very readable to machines, we are not machines but inferior creatures of flesh and bone, and in order to make the time stamps more readable to humans we must convert them int YYYY-MM-DD format, or something similar. Fortunately, the date time library happens to come with a handy .fromtimestamp() method, which we can use on the data as show below:</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">amd</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="n">date</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ts</span><span class="p">))</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">amd</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="p">]</span>
+
+<span class="n">amd</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Close</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2001-06-01</td>
+      <td>28.90</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2001-07-01</td>
+      <td>18.26</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2001-08-01</td>
+      <td>13.55</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2001-09-01</td>
+      <td>8.15</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2001-10-01</td>
+      <td>9.84</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now, for the final part of , creating a percent change column. Unlike the dataframe from the Intel CSV, we have no convinient open column for us to use, only the close column. What we can use instead is the previous months data. This will result in us having no percent change for the first month, therefore resulting in the loss of one row of data unfortunately. We can accomplish this by iterating through all thr rows, and computing the same formula we used to calculate the percent change for Intel stock. So,</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">amd</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    
+    <span class="c1"># We can not compute percent change for the first row</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">amd</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;percent_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">amd</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;percent_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span> <span class="o">-</span>  <span class="n">amd</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">i</span><span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;Close&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">amd</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Close&#39;</span><span class="p">)])</span>
+
+
+<span class="n">amd</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">amd</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Close&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">amd</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>percent_change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2001-07-01</td>
+      <td>-36.816609</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2001-08-01</td>
+      <td>-25.794085</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2001-09-01</td>
+      <td>-39.852399</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2001-10-01</td>
+      <td>20.736196</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2001-11-01</td>
+      <td>37.804878</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Finally, we have a Dataframe that resembles the one we made for Intel earlier. Now we will put all the code we used for the AMD json into a function in order to make a dataframe for every JSON we have downloaded.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This function is just a compilation of code we wrote earlier for loading the contents of a json into a DF, and preprocessing</span>
+<span class="k">def</span> <span class="nf">df_fromjson</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    
+    <span class="n">toret_t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+
+    <span class="n">toret</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Getting the arrays we need</span>
+    <span class="n">tstamp</span> <span class="o">=</span> <span class="n">toret_t</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">close</span> <span class="o">=</span> <span class="n">toret_t</span><span class="p">[</span><span class="s1">&#39;close&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Adding rows to the df one at a time</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tstamp</span><span class="p">:</span>
+        <span class="n">toret</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">toret</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Close&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">close</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Making the date human readable</span>
+    <span class="n">toret</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="n">date</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ts</span><span class="p">))</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">toret</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="p">]</span>
+
+
+    <span class="c1"># Computing percent change</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">toret</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    
+        <span class="c1"># We can not compute percent change for the first row</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">toret</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;percent_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">toret</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;percent_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span> <span class="o">-</span>  <span class="n">toret</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">i</span><span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;Close&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">toret</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Close&#39;</span><span class="p">)])</span>
+
+
+    <span class="c1"># Removing unneeded columns and the first row</span>
+    <span class="n">toret</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">toret</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Close&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">toret</span>
+
+
+<span class="c1"># Testing the function to make sure it does everything correctly</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">df_fromjson</span><span class="p">(</span><span class="s1">&#39;AMD&#39;</span><span class="p">)</span>
+<span class="n">test</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>percent_change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2001-07-01</td>
+      <td>-36.816609</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2001-08-01</td>
+      <td>-25.794085</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2001-09-01</td>
+      <td>-39.852399</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2001-10-01</td>
+      <td>20.736196</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2001-11-01</td>
+      <td>37.804878</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Having confirmed that our conversion function works, we can now go ahead and apply it to all the JSONs. In order to store the many dataframes, we will use a hash table with the name of the company as a string, and the value being the dataframe.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The hash table holding all the data frames</span>
+<span class="n">dfs</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Creating the DFs for every JSON</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">everyone</span><span class="p">:</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">df_fromjson</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">dfs</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+
+
+<span class="c1"># Testing if it made of DF correctly</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">everyone</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dfs</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>DELL:
+         Date  percent_change
+1  2016-10-01        2.698472
+2  2016-11-01        9.102127
+3  2016-12-01        2.634555
+4  2017-01-01       14.591301
+5  2017-02-01        0.791945
+LNVGF:
+         Date  percent_change
+1  2009-04-01       27.272727
+2  2009-05-01       39.285714
+3  2009-06-01        0.000000
+4  2009-07-01       17.948718
+5  2009-08-01       -6.521739
+HPE:
+         Date  percent_change
+1  2015-12-01        2.280885
+2  2016-01-01       -9.474757
+3  2016-02-01       -3.551332
+4  2016-03-01       33.605601
+5  2016-04-01       -6.035905
+AMAT:
+         Date  percent_change
+1  2001-07-01       -6.598778
+2  2001-08-01       -6.040122
+3  2001-09-01      -33.998608
+4  2001-10-01       19.936709
+5  2001-11-01       16.505424
+SECU-B.ST:
+         Date  percent_change
+1  2001-06-30        2.077922
+2  2001-07-31      -17.048346
+3  2001-08-31        3.374233
+4  2001-09-30        5.341246
+5  2001-10-31        7.323944
+WAF.DE:
+         Date  percent_change
+1  2015-07-31      -24.012158
+2  2015-08-31       -1.800000
+3  2015-09-30       -3.054990
+4  2015-10-31       -0.168067
+5  2015-11-30       -4.924242
+TSM:
+         Date  percent_change
+1  2001-07-01        7.306910
+2  2001-08-01      -20.364851
+3  2001-09-01      -26.888183
+4  2001-10-01       36.032263
+5  2001-11-01       23.397948
+TOELY:
+         Date  percent_change
+1  2010-03-01        5.533422
+2  2010-04-01       -1.072627
+3  2010-05-01      -10.273184
+4  2010-06-01        2.106258
+5  2010-07-01      -10.538843
+AMD:
+         Date  percent_change
+1  2001-07-01      -36.816609
+2  2001-08-01      -25.794085
+3  2001-09-01      -39.852399
+4  2001-10-01       20.736196
+5  2001-11-01       37.804878
+IBM:
+         Date  percent_change
+1  2001-07-01       -7.304463
+2  2001-08-01       -4.999851
+3  2001-09-01       -8.234088
+4  2001-10-01       17.826107
+5  2001-11-01        6.959165
+NVDA:
+         Date  percent_change
+1  2001-07-01      -12.781371
+2  2001-08-01        4.716701
+3  2001-09-01      -35.155807
+4  2001-10-01       56.050677
+5  2001-11-01       27.463606
+SMSN.IL:
+         Date  percent_change
+1  2001-06-30        2.358190
+2  2001-07-31       -0.062267
+3  2001-08-31      -26.604361
+4  2001-09-30       27.928693
+5  2001-10-31       26.396815
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now, we are done the data acquisition and wrangling process for the stock data, and ready to do analysis on it!</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="1b--Commodity-Price-data">1b  Commodity Price data<a class="anchor-link" href="#1b--Commodity-Price-data">&#182;</a></h2><h3 id="Acquisition">Acquisition<a class="anchor-link" href="#Acquisition">&#182;</a></h3><p>For this part of the analysis, we will download the commodity price data for every month from 2002 to 2021, to perform analysis on it later. Given the scale and complexity of global supply chains, we will use all the data we have. It might be difficult to see how the price of fertilizer might possibly affect the stock price of Intel, and we might find out later there is no relationship, but if we do not test it out we might be missing some really interesting relationships.</p>
+<p>In comparison to acquiring the stock data from Yahoo finance, acquiring commodity price data for several different commodities is as simple as downloading a file. Pandas' .read_excel() can automatically download and read the file containing the data we need from a provided link.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># While working on the final tutorial this link went dark and the data set dissappeared into oblivion</span>
+<span class="c1"># Fortunately I had a local copy stored on my machine, but here is how you would have done it if the link was still active</span>
+<span class="c1"># Contact me at aelbert@terpmail.umd.edu if you want the dataset used</span>
+<span class="c1"># tcomm = pd.read_excel(&#39;https://www.imf.org/-/media/Files/Research/CommodityPrices/Monthly/external-data-indices-onlyapril.ashx&#39;)</span>
+
+<span class="c1"># We are using a local copy since the link went dead</span>
+<span class="n">tcomm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;external-data-indices-onlyapril.xls&#39;</span><span class="p">)</span>
 <span class="n">tcomm</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -15266,7 +16555,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
 
 
 
@@ -15440,7 +16729,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Data-Processing">Data Processing<a class="anchor-link" href="#Data-Processing">&#182;</a></h3><p>Keeping in line with the same rationale for computing percent change across the years, we want to do the same for commodity prices, as well, in addition to cleaning up the data so it is in line with the stock data too. However, in order to know what must be cleaned up in the data, we must first observe the data.</p>
-<p>Looking at the above data, you will notice several glaring issues. Firstly, three rows do not carry any useful data at all. They must be dropped from the dataframe. Secondly, notice the Commodity column, specifically the format the data is in. In order to match up, and do analysis on the commodity data in relation to the stock data, this column must be replaced with datetime objects instead of simple string data. Furthermore, notice the NaN columns. There are several ways of dealing with them, such as keeping columns</p>
+<p>Looking at the above data, you will notice several glaring issues. Firstly, three rows do not carry any useful data at all. They must be dropped from the dataframe. Secondly, notice the Commodity column, specifically the format the data is in. In order to match up, and do analysis on the commodity data in relation to the stock data, this column must be replaced with datetime objects instead of simple string data. Furthermore, notice the NaN columns. There are several ways of dealing with them, such as dropping columns with NaN values, or simply ignoring NaN's for the final analysis.</p>
 
 </div>
 </div>
@@ -15450,21 +16739,26 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
-
-
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We are removing the first 3 rows which carry no useful information. We can do this using .drop()</span>
 
 <span class="n">tcomm</span> <span class="o">=</span> <span class="n">tcomm</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+
+<span class="c1"># This is just a bit of legacy code I kept in to only select a few columns, used for debugging purposes. I left it in because I used the array later and did </span>
+<span class="c1"># not want to break anything by removing it. </span>
 
 <span class="n">tpchange</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PALLFNF&#39;</span><span class="p">,</span>	<span class="s1">&#39;PEXGALL&#39;</span><span class="p">,</span>	<span class="s1">&#39;PNFUEL&#39;</span><span class="p">,</span>	<span class="s1">&#39;PFANDB&#39;</span><span class="p">,</span>	<span class="s1">&#39;PFOOD&#39;</span><span class="p">,</span> <span class="s1">&#39;PBEVE&#39;</span><span class="p">,</span>	
     <span class="s1">&#39;PINDU&#39;</span><span class="p">,</span> <span class="s1">&#39;PAGRI&#39;</span><span class="p">,</span> <span class="s1">&#39;PRAWM&#39;</span><span class="p">,</span>	<span class="s1">&#39;PALLMETA&#39;</span><span class="p">,</span>	<span class="s1">&#39;PMETA&#39;</span><span class="p">,</span> <span class="s1">&#39;PPMETA&#39;</span><span class="p">,</span> <span class="s1">&#39;PEXGMETA&#39;</span><span class="p">,</span>	<span class="s1">&#39;PFERT&#39;</span><span class="p">,</span> <span class="s1">&#39;PNRG&#39;</span><span class="p">,</span> <span class="s1">&#39;POILAPSP&#39;</span><span class="p">,</span> <span class="s1">&#39;PNGAS&#39;</span><span class="p">,</span> <span class="s1">&#39;PCOAL&#39;</span><span class="p">]</span>
 
+<span class="c1"># We can also drop columns, and do it in place as well</span>
 <span class="n">tcomm</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">tcomm</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;Commodity&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">tpchange</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
+<span class="c1"># This loop converts the YEARM(MONTH) string into a form pythons built in date time parser can parse, which allows us to compare date times directly</span>
+<span class="c1"># .iterrows() iterates per row, giving us its index and the contents of each row for us to look at</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tcomm</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
     <span class="n">datestr</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Commodity&#39;</span><span class="p">])</span>
 
@@ -15474,20 +16768,25 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
     <span class="n">isostr</span> <span class="o">=</span> <span class="n">yearstr</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">mstr</span> <span class="o">+</span> <span class="s2">&quot;-01&quot;</span>
     
+    <span class="c1"># In order to update the date, we have to use .at[index, column] to update the DF directly</span>
     <span class="n">tcomm</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Commodity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">isostr</span><span class="p">)</span>
 
-
+<span class="c1"># Drops all rows we do not need</span>
 <span class="n">tcomm</span> <span class="o">=</span> <span class="n">tcomm</span><span class="p">[</span><span class="n">tcomm</span><span class="p">[</span><span class="s1">&#39;Commodity&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s1">&#39;2002-04-01&#39;</span><span class="p">)]</span>
+
+<span class="c1"># Ensures all numbers are floats</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tcomm</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tpchange</span><span class="p">:</span>
         <span class="n">tcomm</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
 
+<span class="c1"># We will calculate percent change using a deep copy which has one less row</span>
 
 <span class="n">commdata</span> <span class="o">=</span> <span class="n">tcomm</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
 <span class="n">commdata</span> <span class="o">=</span> <span class="n">commdata</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="mi">150</span><span class="p">])</span>
 
+
+<span class="c1"># Resets the index so that we can compare across dataframes, also removes the previously created index</span>
 <span class="n">tcomm</span> <span class="o">=</span> <span class="n">tcomm</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="n">tcomm</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -15495,14 +16794,15 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="n">commdata</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
+<span class="c1"># Computes percent changew</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">commdata</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tpchange</span><span class="p">:</span>
         <span class="n">commdata</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="s2">&quot;_PCHANGE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span> <span class="p">(</span><span class="n">commdata</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">tcomm</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">])</span> <span class="o">/</span> <span class="n">tcomm</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
 
-
+<span class="c1"># Now that percent change has been computed, we no longer need the original prices</span>
 <span class="n">commdata</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">tpchange</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
-<span class="n">commdata</span>
+<span class="n">commdata</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15520,26 +16820,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>/tmp/ipykernel_224/2624307353.py:10: FutureWarning: In a future version of pandas all arguments of DataFrame.drop except for the argument &#39;labels&#39; will be keyword-only.
-  tcomm.drop(tcomm.columns.difference([&#39;Commodity&#39;] + tpchange), 1, inplace=True)
-/tmp/ipykernel_224/2624307353.py:37: FutureWarning: In a future version of pandas all arguments of DataFrame.drop except for the argument &#39;labels&#39; will be keyword-only.
-  tcomm.drop([&#39;index&#39;], 1, inplace=True)
-/tmp/ipykernel_224/2624307353.py:40: FutureWarning: In a future version of pandas all arguments of DataFrame.drop except for the argument &#39;labels&#39; will be keyword-only.
-  commdata.drop([&#39;index&#39;], 1, inplace=True)
-/tmp/ipykernel_224/2624307353.py:48: FutureWarning: In a future version of pandas all arguments of DataFrame.drop except for the argument &#39;labels&#39; will be keyword-only.
-  commdata.drop(tpchange, 1, inplace = True)
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
 
 
 
@@ -15694,141 +16975,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>8.432123</td>
       <td>5.180339</td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>234</th>
-      <td>2021-11-01</td>
-      <td>-4.442645</td>
-      <td>-5.002359</td>
-      <td>-0.418341</td>
-      <td>1.073580</td>
-      <td>0.929958</td>
-      <td>2.882470</td>
-      <td>-6.174645</td>
-      <td>1.300011</td>
-      <td>3.071831</td>
-      <td>-3.669579</td>
-      <td>-8.293148</td>
-      <td>2.354686</td>
-      <td>-7.323527</td>
-      <td>11.135439</td>
-      <td>-7.777791</td>
-      <td>-2.035268</td>
-      <td>-8.665011</td>
-      <td>-30.316569</td>
-    </tr>
-    <tr>
-      <th>235</th>
-      <td>2021-12-01</td>
-      <td>1.688678</td>
-      <td>1.998493</td>
-      <td>1.699513</td>
-      <td>2.135417</td>
-      <td>2.133783</td>
-      <td>2.155608</td>
-      <td>4.356264</td>
-      <td>1.674886</td>
-      <td>-1.858888</td>
-      <td>1.932890</td>
-      <td>5.956717</td>
-      <td>-2.764536</td>
-      <td>4.429774</td>
-      <td>0.112229</td>
-      <td>1.678983</td>
-      <td>-8.248421</td>
-      <td>21.006837</td>
-      <td>0.256197</td>
-    </tr>
-    <tr>
-      <th>236</th>
-      <td>2022-01-01</td>
-      <td>2.230122</td>
-      <td>2.276082</td>
-      <td>3.991393</td>
-      <td>3.528239</td>
-      <td>3.848250</td>
-      <td>-0.424908</td>
-      <td>8.441083</td>
-      <td>3.466084</td>
-      <td>2.969737</td>
-      <td>6.506196</td>
-      <td>9.746074</td>
-      <td>2.384716</td>
-      <td>9.500993</td>
-      <td>-10.956217</td>
-      <td>0.653667</td>
-      <td>14.839650</td>
-      <td>-22.608796</td>
-      <td>27.374485</td>
-    </tr>
-    <tr>
-      <th>237</th>
-      <td>2022-02-01</td>
-      <td>6.423653</td>
-      <td>6.779986</td>
-      <td>4.113165</td>
-      <td>4.723593</td>
-      <td>4.989165</td>
-      <td>1.302151</td>
-      <td>3.423100</td>
-      <td>4.438266</td>
-      <td>2.147407</td>
-      <td>3.409336</td>
-      <td>3.708583</td>
-      <td>3.001292</td>
-      <td>4.120920</td>
-      <td>7.195349</td>
-      <td>8.560272</td>
-      <td>11.110886</td>
-      <td>0.199381</td>
-      <td>18.989586</td>
-    </tr>
-    <tr>
-      <th>238</th>
-      <td>2022-03-01</td>
-      <td>18.330402</td>
-      <td>19.405967</td>
-      <td>7.093399</td>
-      <td>5.501123</td>
-      <td>6.347994</td>
-      <td>-5.806470</td>
-      <td>6.481606</td>
-      <td>4.951528</td>
-      <td>0.427610</td>
-      <td>6.730765</td>
-      <td>7.816015</td>
-      <td>5.240787</td>
-      <td>7.749649</td>
-      <td>33.490843</td>
-      <td>28.296122</td>
-      <td>22.063556</td>
-      <td>42.277565</td>
-      <td>41.157677</td>
-    </tr>
   </tbody>
 </table>
-<p>239 rows × 19 columns</p>
 </div>
 </div>
 
@@ -15838,6 +16986,18 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now, we have gotten our commodity data formatted into</p>
+
+</div>
+</div>
+</div>
 </div>
 </body>
 
