@@ -14625,24 +14625,22 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[287]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1245]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">urllib</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span>  <span class="n">linear_model</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
-<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sma</span>
+<span class="kn">from</span> <span class="nn">statsmodels.stats.weightstats</span> <span class="kn">import</span> <span class="n">ztest</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
 
 <span class="c1"># Warnings about the future kept clogging up the output</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -14661,7 +14659,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Data-Acquisition-and-Processing">Data Acquisition and Processing<a class="anchor-link" href="#Data-Acquisition-and-Processing">&#182;</a></h1><p>This is the data acquisition and wrangling phase. To make it easier to follow along, we are going to combine both parts into one for every source of data</p>
+<h1 id="Data-Acquisition-and-Processing">Data Acquisition and Processing<a class="anchor-link" href="#Data-Acquisition-and-Processing">&#182;</a></h1><p>This is the data acquisition and wrangling phase of the data science lifecycle. To make it easier to follow along, we are going to combine both parts into one for every source of data</p>
 <p>For our analysis today, we will be getting two types of data, stock and commodity price data. Getting each will require the use of different libraries and different techniques to wrangle for use later.</p>
 
 </div>
@@ -14713,7 +14711,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[288]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1246]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This method returns a JSON containing data for the company(s) requested</span>
@@ -14770,7 +14768,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now that we have gotten all the data downloaded from Yahoo's API in .json format, the next step is to load in Intel's data. This was manually downloaded from the website (link above) and transfered to the tutorial folder. Once it is locally available, loading it is as simple as using pandas' .load_csv() function.</p>
+<p>Now that we have gotten all the data downloaded from Yahoo's API in .json format, the next step is to load in Intel's data. This was manually downloaded from the website (link above) and transfered to the tutorial folder. Once it is locally available, loading it is as simple as using pandas' .load_csv() function, and turned into a Dataframe, which is pretty much a glorified array containing lots of data, which pandas provides handy functions to manipulate. If you are unfamiliar with pandas, the link below is useful:</p>
+<p><a href="https://pandas.pydata.org/docs/user_guide/10min.html">https://pandas.pydata.org/docs/user_guide/10min.html</a></p>
 
 </div>
 </div>
@@ -14780,7 +14779,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[289]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1247]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># A mirror to the dataset can be found at the link below:</span>
@@ -14805,7 +14804,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[289]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1247]:</div>
 
 
 
@@ -14918,7 +14917,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[290]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1248]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;percent_change&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;Close&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">intcdf</span><span class="p">[</span><span class="s2">&quot;Open&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">100.0</span>
@@ -14940,7 +14939,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[290]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1248]:</div>
 
 
 
@@ -15057,7 +15056,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[291]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1249]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">intcdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">intcdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;percent_change&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -15084,7 +15083,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[291]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1249]:</div>
 
 
 
@@ -15165,7 +15164,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[292]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1250]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">amd_t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s1">&#39;AMD.json&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
@@ -15187,7 +15186,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[292]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1250]:</div>
 
 
 
@@ -15260,7 +15259,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[293]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1251]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">amd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -15296,7 +15295,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[293]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1251]:</div>
 
 
 
@@ -15377,7 +15376,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[294]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1252]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Opening the JSON as a file</span>
@@ -15442,7 +15441,7 @@ First ten close prices:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[295]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1253]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">amd</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="n">date</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ts</span><span class="p">))</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">amd</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="p">]</span>
@@ -15465,7 +15464,7 @@ First ten close prices:
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[295]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1253]:</div>
 
 
 
@@ -15548,7 +15547,7 @@ First ten close prices:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[296]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1254]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">amd</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -15581,7 +15580,7 @@ First ten close prices:
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[296]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1254]:</div>
 
 
 
@@ -15662,7 +15661,7 @@ First ten close prices:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[297]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1255]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This function is just a compilation of code we wrote earlier for loading the contents of a json into a DF, and preprocessing</span>
@@ -15726,7 +15725,7 @@ First ten close prices:
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[297]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1255]:</div>
 
 
 
@@ -15807,7 +15806,7 @@ First ten close prices:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[298]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1256]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The hash table holding all the data frames</span>
@@ -15957,7 +15956,7 @@ SMSN.IL:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[299]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1257]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We want to update all DFs</span>
@@ -16121,7 +16120,7 @@ SMSN.IL:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[300]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1258]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># While working on the final tutorial this link went dark and the data set dissappeared into oblivion</span>
@@ -16149,7 +16148,7 @@ SMSN.IL:
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[300]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1258]:</div>
 
 
 
@@ -16333,7 +16332,7 @@ SMSN.IL:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[301]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1259]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># We are removing the first 3 rows which carry no useful information. We can do this using .drop()</span>
@@ -16446,7 +16445,7 @@ SMSN.IL:
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[301]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1259]:</div>
 
 
 
@@ -16642,7 +16641,7 @@ SMSN.IL:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now that we have finally gotten all our data cleaned to a useable state, we can now work with it to hopefully gather some insights. To refresh, the columns of our dataframes have the date, and the percent change for any given stock or commodity for a given month.</p>
+<p>Now that we have finally gotten all our data cleaned to a useable state, we can now work with it to hopefully gather some insights, for data exploration part of the lifecycle. To refresh, the columns of our dataframes have the date, and the percent change for any given stock or commodity for a given month.</p>
 <h2 id="Graphing-the-Data">Graphing the Data<a class="anchor-link" href="#Graphing-the-Data">&#182;</a></h2><p>The first thing we want to explore is the relationship between the stock prices of the three aformentioned groups with intel prices. We can do this qualitatively by plotting the percent changes, with the y axis being Intel, and the x axis being the stock we want to plot. The reason for this is that Intel's stock price change is the one we want to predict, so it makes sense to make it our y axis. One challenge, however, is dealing with the fact that there is missing data. Some companies, for example, did not go public until well after 20 years ago. In order to deal with this, when plotting, we are going to make a new temporary dataframe which is Intel's data inner joined on the data from the company we want to analyse, jouned on date.</p>
 <p><a href="https://www.analyticsvidhya.com/blog/2020/02/joins-in-pandas-master-the-different-types-of-joins-in-python/">https://www.analyticsvidhya.com/blog/2020/02/joins-in-pandas-master-the-different-types-of-joins-in-python/</a></p>
 <p>More information on inner joins is available above, but a quick way to think about one is essentially merging two different dataframes, combining their columns. For an inner join, a row exists in the returned dataframe only if the date exists in both datasets, so in this way, we are essentially just ignoring missing data. A function that prepares the data of any stock and Intel's stock's data for plotting can be seen below:</p>
@@ -16655,7 +16654,7 @@ SMSN.IL:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[302]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1260]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">prepare_plot</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -16690,7 +16689,7 @@ SMSN.IL:
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[302]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1260]:</div>
 
 
 
@@ -16771,7 +16770,7 @@ SMSN.IL:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[303]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1261]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">autoplot_intelpchange</span><span class="p">(</span><span class="n">compnames</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -16889,7 +16888,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[304]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1262]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">prepare_plot_comm</span><span class="p">(</span><span class="n">commodity</span><span class="p">):</span>
@@ -16931,7 +16930,7 @@ jp-needs-light-background
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[304]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1262]:</div>
 
 
 
@@ -17043,7 +17042,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[305]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1263]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">comm_autoplot_intelpchange</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -17433,7 +17432,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[306]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1264]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Fits a linear model and computes summary statistics on said model</span>
@@ -17499,7 +17498,7 @@ Dep. Variable:       percent_change_x   R-squared:                       0.353
 Model:                            OLS   Adj. R-squared:                  0.351
 Method:                 Least Squares   F-statistic:                     131.1
 Date:                Sun, 15 May 2022   Prob (F-statistic):           1.66e-24
-Time:                        21:29:37   Log-Likelihood:                -800.06
+Time:                        23:06:01   Log-Likelihood:                -800.06
 No. Observations:                 242   AIC:                             1604.
 Df Residuals:                     240   BIC:                             1611.
 Df Model:                           1                                         
@@ -17525,7 +17524,7 @@ Dep. Variable:       percent_change_x   R-squared:                       0.063
 Model:                            OLS   Adj. R-squared:                  0.059
 Method:                 Least Squares   F-statistic:                     16.14
 Date:                Sun, 15 May 2022   Prob (F-statistic):           7.88e-05
-Time:                        21:29:37   Log-Likelihood:                -844.92
+Time:                        23:06:01   Log-Likelihood:                -844.92
 No. Observations:                 242   AIC:                             1694.
 Df Residuals:                     240   BIC:                             1701.
 Df Model:                           1                                         
@@ -17551,7 +17550,7 @@ Dep. Variable:       percent_change_x   R-squared:                       0.148
 Model:                            OLS   Adj. R-squared:                  0.137
 Method:                 Least Squares   F-statistic:                     13.89
 Date:                Sun, 15 May 2022   Prob (F-statistic):           0.000360
-Time:                        21:29:37   Log-Likelihood:                -268.99
+Time:                        23:06:01   Log-Likelihood:                -268.99
 No. Observations:                  82   AIC:                             542.0
 Df Residuals:                      80   BIC:                             546.8
 Df Model:                           1                                         
@@ -17577,7 +17576,7 @@ Dep. Variable:       percent_change_x   R-squared:                       0.232
 Model:                            OLS   Adj. R-squared:                  0.229
 Method:                 Least Squares   F-statistic:                     72.65
 Date:                Sun, 15 May 2022   Prob (F-statistic):           1.74e-15
-Time:                        21:29:37   Log-Likelihood:                -820.80
+Time:                        23:06:01   Log-Likelihood:                -820.80
 No. Observations:                 242   AIC:                             1646.
 Df Residuals:                     240   BIC:                             1653.
 Df Model:                           1                                         
@@ -17603,7 +17602,7 @@ Dep. Variable:       percent_change_x   R-squared:                       0.158
 Model:                            OLS   Adj. R-squared:                  0.152
 Method:                 Least Squares   F-statistic:                     27.35
 Date:                Sun, 15 May 2022   Prob (F-statistic):           5.77e-07
-Time:                        21:29:37   Log-Likelihood:                -480.70
+Time:                        23:06:01   Log-Likelihood:                -480.70
 No. Observations:                 148   AIC:                             965.4
 Df Residuals:                     146   BIC:                             971.4
 Df Model:                           1                                         
@@ -17629,7 +17628,7 @@ Dep. Variable:       percent_change_x   R-squared:                       0.232
 Model:                            OLS   Adj. R-squared:                  0.229
 Method:                 Least Squares   F-statistic:                     72.65
 Date:                Sun, 15 May 2022   Prob (F-statistic):           1.74e-15
-Time:                        21:29:37   Log-Likelihood:                -820.80
+Time:                        23:06:01   Log-Likelihood:                -820.80
 No. Observations:                 242   AIC:                             1646.
 Df Residuals:                     240   BIC:                             1653.
 Df Model:                           1                                         
@@ -17655,7 +17654,7 @@ Dep. Variable:       percent_change_x   R-squared:                       0.161
 Model:                            OLS   Adj. R-squared:                  0.157
 Method:                 Least Squares   F-statistic:                     40.53
 Date:                Sun, 15 May 2022   Prob (F-statistic):           1.19e-09
-Time:                        21:29:37   Log-Likelihood:                -733.42
+Time:                        23:06:01   Log-Likelihood:                -733.42
 No. Observations:                 213   AIC:                             1471.
 Df Residuals:                     211   BIC:                             1478.
 Df Model:                           1                                         
@@ -17681,7 +17680,7 @@ Dep. Variable:         percent_change   R-squared:                       0.012
 Model:                            OLS   Adj. R-squared:                  0.008
 Method:                 Least Squares   F-statistic:                     2.812
 Date:                Sun, 15 May 2022   Prob (F-statistic):             0.0949
-Time:                        21:29:37   Log-Likelihood:                -840.53
+Time:                        23:06:01   Log-Likelihood:                -840.53
 No. Observations:                 239   AIC:                             1685.
 Df Residuals:                     237   BIC:                             1692.
 Df Model:                           1                                         
@@ -17707,7 +17706,7 @@ Dep. Variable:         percent_change   R-squared:                       0.001
 Model:                            OLS   Adj. R-squared:                 -0.003
 Method:                 Least Squares   F-statistic:                    0.2439
 Date:                Sun, 15 May 2022   Prob (F-statistic):              0.622
-Time:                        21:29:37   Log-Likelihood:                -787.14
+Time:                        23:06:01   Log-Likelihood:                -787.14
 No. Observations:                 230   AIC:                             1578.
 Df Residuals:                     228   BIC:                             1585.
 Df Model:                           1                                         
@@ -17733,7 +17732,7 @@ Dep. Variable:         percent_change   R-squared:                       0.023
 Model:                            OLS   Adj. R-squared:                  0.019
 Method:                 Least Squares   F-statistic:                     5.627
 Date:                Sun, 15 May 2022   Prob (F-statistic):             0.0185
-Time:                        21:29:37   Log-Likelihood:                -839.14
+Time:                        23:06:01   Log-Likelihood:                -839.14
 No. Observations:                 239   AIC:                             1682.
 Df Residuals:                     237   BIC:                             1689.
 Df Model:                           1                                         
@@ -17767,8 +17766,360 @@ Notes:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Hypothesis-Testing">Hypothesis Testing<a class="anchor-link" href="#Hypothesis-Testing">&#182;</a></h2><p>Now that we have explored our data, and found features that have a particularly strong relationship with Intel stock prices, we want to take the next step, and predict whether Intel's stock price will go up, or down, in a given month. To do this, we will use a SkLearn's decision tree functionallity in order to create a supervised learning model, that based on the data features we found to be significant can classify the value of a target variable. More information on SkLearn's decision trees can be found below:</p>
+<p>While output from OLS is intimidating, we are mainly interested in two parameters for determing the statistical significance and strength of our linear correlation. The Prob (Jarque-Bera) parameter, and the R-squared parameter. R squared is the linear correlation coefficient squared. Quite simply, it tells us the strength of a linear relationship. The closer it is to one, the more closely two variables are linearly correlation.</p>
+<p>Jarque-Bera is a statistical test that measures how data approximates the normal distribution. Within regression analysis, it can tell us if there is a statistically significant relationship or not between two values. More information on it can be found at the link below:</p>
+<p><a href="https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test">https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test</a></p>
+<p>Now, we will examine the output of all the tests. The R-squared statistics are rather low, with the greatest being 0.35. However, this does not mean that the data does not have any predictive power at all, and therefore should be ignored. The price of any stock is determined by numerous factors, and it is unlikely that any single factor will have much influence on the price of a stock. In our case, it appears that the company AMAT has the highest correlation with Intel stock prices, therefore has the highest predictive power.</p>
+<p>Now, as for the JB test, notice that the company WAF.DE and the commidity index for fertilizer both have Prob(JB) &gt; 0.05. Prob(JB) is the probability that the relationship we see is purely random, or in other words, not statistically significant. Therefore, they should be ignored, while the others have a Prob(JB) statistic of less than 0.05, meaning that their relationship is statistically significant.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Hypothesis-Testing">Hypothesis Testing<a class="anchor-link" href="#Hypothesis-Testing">&#182;</a></h2><p>Now that we have explored our data, and found features that have a particularly strong relationship with Intel stock prices, we want to take the next step, and predict whether Intel's stock price will go up, or down, in a given month, for the hypothesis testing and ML part of the lifecycle. To do this, we will use a SkLearn's decision tree functionallity in order to create a supervised learning model, that based on the data features we found to be significant can classify the value of a target variable. More information on SkLearn's decision trees can be found below:</p>
 <p><a href="https://scikit-learn.org/stable/modules/tree.html">https://scikit-learn.org/stable/modules/tree.html</a></p>
+<p>In order to set up the model, we need an independent and dependent data set. For our independent data set, we will need a bunch of data features. We will use the prices of stocks and commodities we found to be statistically significant for this. For our dependent data, we will use the Intel data converted converted into a dummy variable, 0 if the percent change is negative, 1 otherwise, which will allow the decision tree to classify whether the price for Intel stock is going up or down in any month.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1265]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Commodities for our independent dataset</span>
+<span class="n">ml_comm</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PAGRI&#39;</span><span class="p">,</span> <span class="s1">&#39;PPMETA&#39;</span><span class="p">]</span>
+
+<span class="n">stocks_tofit</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;WAF.DE&#39;</span><span class="p">)</span>
+<span class="n">ml_stock</span> <span class="o">=</span> <span class="n">stocks_tofit</span>
+
+
+<span class="c1"># + [commodity + &#39;_PCHANGE&#39;]</span>
+
+<span class="c1"># We will &quot;Accumulate&quot; an independent dataset through a series of inner joins</span>
+<span class="n">indaccum</span> <span class="o">=</span> <span class="n">commdata</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">commdata</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Accumulating the stock columns into the independent dataset</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ml_stock</span><span class="p">:</span>
+    <span class="n">indaccum</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">indaccum</span><span class="p">,</span> <span class="n">dfs</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span>
+
+<span class="c1"># Accumulating the commodity columns into the dataset</span>
+<span class="k">for</span> <span class="n">comm</span> <span class="ow">in</span> <span class="n">ml_comm</span><span class="p">:</span>
+    <span class="n">indaccum</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">indaccum</span><span class="p">,</span> <span class="n">commdata</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">commdata</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">comm</span> <span class="o">+</span> <span class="s1">&#39;_PCHANGE&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span>
+
+
+<span class="n">intcdata_t</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">[</span><span class="s1">&#39;INTC&#39;</span><span class="p">]</span>
+<span class="n">intcdata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+
+<span class="c1"># Assigning a dummy variable to the percent change for intel stock</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">intcdata_t</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;percent_change&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">intcdata</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;change_intel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">intcdata</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">intcdata</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;change_intel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">intcdata</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span>
+
+
+
+<span class="c1"># Creating a dependent dataset of the right size</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">indaccum</span><span class="p">,</span> <span class="n">intcdata</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span>
+
+<span class="c1"># Forcing to int (Pandas really wanted the 1s and 0s to be a float64 for some reaon)</span>
+<span class="n">intdep</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;change_intel&#39;</span><span class="p">],</span> <span class="n">downcast</span><span class="o">=</span><span class="s1">&#39;integer&#39;</span><span class="p">)</span>
+<span class="n">dep</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="o">.</span><span class="n">from_codes</span><span class="p">(</span><span class="n">intdep</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;down&#39;</span><span class="p">,</span> <span class="s1">&#39;up&#39;</span><span class="p">])</span>
+
+<span class="n">indaccum</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span>  <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">dep</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1265]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>[&#39;down&#39;, &#39;down&#39;, &#39;up&#39;, &#39;down&#39;, &#39;up&#39;, ..., &#39;down&#39;, &#39;up&#39;, &#39;down&#39;, &#39;down&#39;, &#39;up&#39;]
+Length: 129
+Categories (2, object): [&#39;down&#39;, &#39;up&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We now have our dependent dataset, and</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1266]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indaccum</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1266]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>percent_change_x</th>
+      <th>percent_change_y</th>
+      <th>percent_change_x</th>
+      <th>percent_change_y</th>
+      <th>percent_change_x</th>
+      <th>percent_change_y</th>
+      <th>PAGRI_PCHANGE</th>
+      <th>PPMETA_PCHANGE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4.716380</td>
+      <td>-4.761905</td>
+      <td>-5.967865</td>
+      <td>-3.299019</td>
+      <td>-5.967865</td>
+      <td>23.113916</td>
+      <td>4.244845</td>
+      <td>1.925156</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-4.930006</td>
+      <td>1.554054</td>
+      <td>-0.895037</td>
+      <td>-13.440827</td>
+      <td>-0.895037</td>
+      <td>-4.553223</td>
+      <td>-0.782735</td>
+      <td>4.119931</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.448143</td>
+      <td>0.731870</td>
+      <td>10.837438</td>
+      <td>-2.452532</td>
+      <td>10.837438</td>
+      <td>5.079933</td>
+      <td>2.733644</td>
+      <td>4.669153</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-12.173359</td>
+      <td>-11.492734</td>
+      <td>1.185185</td>
+      <td>0.921625</td>
+      <td>1.185185</td>
+      <td>1.506779</td>
+      <td>-3.463191</td>
+      <td>0.515255</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-12.500000</td>
+      <td>-0.586265</td>
+      <td>2.377179</td>
+      <td>-0.193683</td>
+      <td>2.377179</td>
+      <td>0.000000</td>
+      <td>-1.256564</td>
+      <td>4.288786</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>our independent dataset. Now, we may move onto making the decision tree.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1267]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+
+<span class="c1"># Computing cross validation scores for the decision tree</span>
+<span class="n">dt_scores</span> <span class="o">=</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">indaccum</span><span class="p">,</span> <span class="n">dep</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;f1_macro&#39;</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DT Cross validation mean and st. dev:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2"> accuracy with a standard deviation of </span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dt_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">dt_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()))</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The corresponding Z score and P value is&quot;</span><span class="p">)</span>
+<span class="n">ztest</span><span class="p">(</span><span class="n">dt_scores</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>DT Cross validation mean and st. dev:
+0.61 accuracy with a standard deviation of 0.13
+The corresponding Z score and P value is
+</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1267]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>(2.5673362450045754, 0.010248318203350535)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Note: Due to the inherent innaccurate randomness with the crossfold validation</p>
+<p>Crossfold evaluation is a way of evaluating the performance of an estimator, or in our case, classifier. SkLearn provides us a handy method to do this given a model, independent, and dependent set. More information can be found at the link below:</p>
+<p><a href="https://scikit-learn.org/stable/modules/cross_validation.html">https://scikit-learn.org/stable/modules/cross_validation.html</a></p>
+<p>In our case, when fed the independent set with all the features, and the dependent set, our decision tree model was about 60% accurate, which is just about 10% more accurate than just guessing randomly if a stock will go up or down. Still, it is an improvement, and we can prove it, statistically.</p>
+<p>Our null hypothesis is that our model is no better than guessing randomly, meaning it will have a 0.5 average accuracy. We want to show that it is better. One way to go about doing this is a Z test, more information at the link below:</p>
+<p><a href="https://en.wikipedia.org/wiki/Z-test">https://en.wikipedia.org/wiki/Z-test</a></p>
+<p>Statsmodels comes with a Z test function, seen above. According to the returned Z statistic and p value, we can see that there is, in fact, a statistically significant improvement over guessing randomly, even if it is small.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>Through our analysis of Intel stock data and other companies stock along with commodity prices, we found a few interesting trends, which we will talk about in the insight part of the data science lifecycle. Firstly, we found that the relationship with suppliers of Intel and Intel's stock prices is particularly strong, and also the relationship between TSM (Taiwan Semiconductor Manufacturing Company) and SMSN.IL (Samsung) is also particularly strong as well. Furthermore, we also found that there exists a slight negative relationship between the price of precious metals, and the price of Intel's stock. Finally, we also found that we can predict whether Intel's stock is going up or down, using a decision tree, at a slightly better but statistically significant improvement over just guessing randomly.</p>
+<p>Overall, we can use the insights derived from this tutorial to inform budding traders about what factors make Intel stock go up and down, hopefully allowing them to turn a bit more profit than they otherwise would.</p>
+<p>We could further expand our analysis by throwing even more data and seeing what improves the accuracy of our model. For example, we could scrape social media and news sites and process it with NLP in ordet to determine public sentiment of Intel, thereby adding another feature to our independent dataset. We could also find more specific commodity data, such as silicon prices or other market indicators.</p>
 
 </div>
 </div>
